@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Материалы — E&S Dept.</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #0e0e0e;
+    --surface:  #161616;
+    --border:   #2a2a2a;
+    --accent:   #d4ff00;
+    --muted:    #555;
+    --text:     #e8e8e8;
+    --text-dim: #888;
+    --mono:     'Share Tech Mono', monospace;
+    --sans:     'Barlow Condensed', sans-serif;
+    --red:      #ff3c3c;
+    --orange:   #ff8c00;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.4;
+    min-height: 100vh;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 28px 40px 22px;
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    line-height: 1.6;
+  }
+
+  .page-title {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .last-updated {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  .filter-bar {
+    padding: 16px 40px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-right: 4px;
+  }
+
+  .filter-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 5px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #000; }
+
+  main { padding: 32px 40px 60px; }
+
+  .section-heading {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    margin-top: 36px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .section-heading:first-of-type { margin-top: 0; }
+
+  .mat-table-wrap { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+
+  thead tr { border-bottom: 1px solid var(--accent); }
+
+  th {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 8px 14px 10px;
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  tbody tr:hover { background: var(--surface); }
+
+  td {
+    padding: 11px 14px;
+    font-weight: 400;
+    vertical-align: middle;
+  }
+
+  td.material-name {
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border: 1px solid;
+  }
+  .badge-yes { color: var(--accent); border-color: var(--accent); }
+  .badge-no  { color: var(--red);    border-color: var(--red); }
+
+  .qty { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; }
+  .qty-много { color: var(--accent); }
+  .qty-мало  { color: var(--orange); }
+  .qty-нет   { color: var(--red); }
+
+  /* Photo thumbnail */
+  .td-photo { width: 64px; padding: 6px 14px; }
+
+  .thumb {
+    display: block;
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    cursor: zoom-in;
+    transition: border-color 0.15s, transform 0.15s;
+    background: var(--surface);
+  }
+  .thumb:hover {
+    border-color: var(--accent);
+    transform: scale(1.08);
+  }
+
+  .no-photo {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* Lightbox */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.88);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+  }
+  .lightbox.open { display: flex; }
+
+  .lightbox img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 60px rgba(0,0,0,0.8);
+  }
+
+  .lb-close {
+    position: absolute;
+    top: 20px;
+    right: 28px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    user-select: none;
+  }
+  .lb-close:hover { color: var(--text); }
+
+  /* States */
+  .state-msg {
+    padding: 60px 0;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 18px 40px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 600px) {
+    header, main, .filter-bar, footer { padding-left: 20px; padding-right: 20px; }
+    th, td { padding-left: 8px; padding-right: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">E&amp;S Dept. / Zhivaya Glina<br>Справочник материалов</div>
+    <div class="page-title">Материалы</div>
+  </div>
+  <div class="last-updated" id="last-updated">—</div>
+</header>
+
+<div class="filter-bar">
+  <span class="filter-label">ФИЛЬТР //</span>
+  <button class="filter-btn active" data-filter="all">Все</button>
+  <button class="filter-btn" data-filter="3D">3D Печать</button>
+  <button class="filter-btn" data-filter="Резка">Лазер</button>
+  <button class="filter-btn" data-filter="в наличии">Только в наличии</button>
+</div>
+
+<main id="main-content">
+  <div class="state-msg">
+    <span class="spinner"></span> ЗАГРУЗКА МАТЕРИАЛОВ...
+  </div>
+</main>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <span class="lb-close" id="lb-close">[ ЗАКРЫТЬ ]</span>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<footer>
+  <span>E&amp;S Dept. — Fabrication &amp; Solutions</span>
+  <span>Данные синхронизируются с Google Sheets</span>
+</footer>
+
+<script>
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQzBnaYFnkcmMlcPV8HYOqRaVm0_yUsd4RsWgzfwuXwhh1KNgXTPETD7XnmDJZ4vD0fWQHEZXOtSdVI/pub?output=csv';
+
+let allRows = [];
+let activeFilter = 'all';
+
+/* ── CSV parsing ── */
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = splitCSVLine(lines[0]).map(h => h.trim());
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    if (!lines[i].trim()) continue;
+    const vals = splitCSVLine(lines[i]);
+    const row = {};
+    headers.forEach((h, idx) => { row[h] = (vals[idx] || '').trim(); });
+    rows.push(row);
+  }
+  return rows;
+}
+
+function splitCSVLine(line) {
+  const result = [];
+  let cur = '', inQuote = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { inQuote = !inQuote; continue; }
+    if (c === ',' && !inQuote) { result.push(cur); cur = ''; continue; }
+    cur += c;
+  }
+  result.push(cur);
+  return result;
+}
+
+/* ── Google Drive URL → thumbnail ── */
+function driveThumbUrl(url, size) {
+  if (!url) return null;
+  const m = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (!m) return null;
+  return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w${size || 400}`;
+}
+
+/* ── Data normalisation ── */
+function normalize(row) {
+  return {
+    category: row['Тип'] || '',
+    material: row['Материал'] || '',
+    color:    row['Цвет'] || '—',
+    size:     row['Размер'] || '—',
+    inStock:  row['Наличие'] || '',
+    qty:      row['Кол-во'] || '',
+    photo:    row['Фото'] || '',
+  };
+}
+
+/* ── Render helpers ── */
+function stockBadge(val) {
+  return val.toLowerCase().trim() === 'да'
+    ? '<span class="badge badge-yes">В НАЛИЧИИ</span>'
+    : '<span class="badge badge-no">НЕТ</span>';
+}
+
+function qtyLabel(val) {
+  const v = val.toLowerCase().trim();
+  if (v === 'много') return '<span class="qty qty-много">МНОГО</span>';
+  if (v === 'мало')  return '<span class="qty qty-мало">МАЛО</span>';
+  if (v === 'нет')   return '<span class="qty qty-нет">НЕТ</span>';
+  return `<span class="qty">${val}</span>`;
+}
+
+function photoCell(driveUrl) {
+  const thumb = driveThumbUrl(driveUrl, 400);
+  if (!thumb) return '<td class="td-photo"><span class="no-photo">—</span></td>';
+  return `<td class="td-photo">
+    <img class="thumb" src="${thumb}" alt="фото"
+         loading="lazy"
+         data-drive="${driveUrl}"
+         onerror="this.outerHTML='<span class=no-photo>—</span>'">
+  </td>`;
+}
+
+function groupBy(arr, key) {
+  return arr.reduce((acc, row) => {
+    const k = row[key] || 'Прочее';
+    (acc[k] = acc[k] || []).push(row);
+    return acc;
+  }, {});
+}
+
+function buildTable(rows) {
+  if (!rows.length) return '<p class="state-msg">Нет материалов по этому фильтру.</p>';
+  const groups = groupBy(rows, 'category');
+  let html = '';
+  for (const [cat, items] of Object.entries(groups)) {
+    html += `<div class="section-heading">${cat}</div>`;
+    html += `<div class="mat-table-wrap"><table>
+      <thead><tr>
+        <th>Фото</th><th>Материал</th><th>Цвет</th><th>Размер</th><th>Наличие</th><th>Количество</th>
+      </tr></thead><tbody>`;
+    for (const item of items) {
+      html += `<tr>
+        ${photoCell(item.photo)}
+        <td class="material-name">${item.material || '—'}</td>
+        <td>${item.color}</td>
+        <td>${item.size}</td>
+        <td>${stockBadge(item.inStock)}</td>
+        <td>${qtyLabel(item.qty)}</td>
+      </tr>`;
+    }
+    html += '</tbody></table></div>';
+  }
+  return html;
+}
+
+function applyFilter() {
+  let rows = allRows.map(normalize);
+  if (activeFilter === 'в наличии') {
+    rows = rows.filter(r => r.inStock.toLowerCase().trim() === 'да');
+  } else if (activeFilter !== 'all') {
+    rows = rows.filter(r => r.category.toLowerCase().includes(activeFilter.toLowerCase()));
+  }
+  document.getElementById('main-content').innerHTML = buildTable(rows);
+}
+
+/* ── Data loading with proxy fallbacks ── */
+async function tryFetch(url) {
+  const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const text = await res.text();
+  // Basic sanity check — real CSV will have commas
+  if (!text.includes(',')) throw new Error('Unexpected response');
+  return text;
+}
+
+async function loadData() {
+  const main = document.getElementById('main-content');
+
+  const candidates = [
+    SHEET_CSV_URL,                                                                     // 1. direct (works in some regions)
+    `https://corsproxy.io/?${encodeURIComponent(SHEET_CSV_URL)}`,                     // 2. corsproxy.io
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(SHEET_CSV_URL)}`,        // 3. allorigins
+    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(SHEET_CSV_URL)}`,   // 4. codetabs
+  ];
+
+  let text = null;
+  for (const url of candidates) {
+    try {
+      text = await tryFetch(url);
+      break;
+    } catch (_) {
+      // try next proxy
+    }
+  }
+
+  if (!text) {
+    main.innerHTML = `<div class="state-msg">
+      ⚠ Не удалось загрузить данные.<br>
+      <span style="color:#444;font-size:10px;display:block;margin-top:8px">Проверьте соединение или попробуйте позже.</span>
+      <button onclick="loadData()" class="filter-btn" style="margin-top:20px">↺ Повторить</button>
+    </div>`;
+    return;
+  }
+
+  allRows = parseCSV(text);
+  const now = new Date();
+  document.getElementById('last-updated').innerHTML =
+    `ОБНОВЛЕНО<br>${now.toLocaleDateString('ru-RU')} ${now.toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'})}`;
+  applyFilter();
+}
+
+/* ── Filter buttons ── */
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    applyFilter();
+  });
+});
+
+/* ── Lightbox ── */
+const lightbox = document.getElementById('lightbox');
+const lbImg    = document.getElementById('lb-img');
+
+document.getElementById('main-content').addEventListener('click', e => {
+  const thumb = e.target.closest('img.thumb');
+  if (!thumb) return;
+  const big = driveThumbUrl(thumb.dataset.drive, 1200);
+  lbImg.src = big || thumb.src;
+  lightbox.classList.add('open');
+});
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  lbImg.src = '';
+}
+
+lightbox.addEventListener('click', closeLightbox);
+document.getElementById('lb-close').addEventListener('click', closeLightbox);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+loadData();
+</script>
+</body>
+</html>
